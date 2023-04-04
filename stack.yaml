@@ -72,6 +72,13 @@ Resources:
         VpcId: !Ref VPC
         GroupName: VPC-DMS
         GroupDescription: Default Security Group VPC
+        SecurityGroupIngress:
+            - IpProtocol: tcp
+              CidrIp: 0.0.0.0/0
+              FromPort: 3306
+              ToPort: 3306
+            - IpProtocol: tcp
+              CidrIp: 0.0.0.0/0
+              FromPort: 5432
+              ToPort: 5432
         
-
-# Hasta este momento se ha creado una VPC con 2 subredes públicas y 2 subredes privadas conectadas entre sí
