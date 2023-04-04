@@ -25,13 +25,13 @@ Resources:
         Type: AWS::EC2::Subnet
         Properties:
             VpcId: !Ref VPC
-            MapPublicOnLaunch: false
+            MapPublicIpOnLaunch: false
 
     SubnetPrivate2:
         Type: AWS::EC2::Subnet
         Properties:
             VpcId: !Ref VPC
-            MapPublicOnLaunch: false
+            MapPublicIpOnLaunch: false
 
     InternetGateway:
       Type: AWS::EC2::InternetGateway
@@ -42,7 +42,6 @@ Resources:
           VpcId: !Ref VPC
           InternetGatewayId: !Ref InternetGateway
 
-          
     SubnetRouteTable:
         Type: AWS::EC2::RouteTable
         Properties:
@@ -66,4 +65,13 @@ Resources:
         Properties:
             RouteTableId: !Ref SubnetRouteTable
             GatewayId: !Ref InternetGateway
+    
+    SecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        VpcId: !Ref VPC
+        GroupName: VPC-DMS
+        GroupDescription: Default Security Group VPC
+        
+
 # Hasta este momento se ha creado una VPC con 2 subredes públicas y 2 subredes privadas conectadas entre sí
