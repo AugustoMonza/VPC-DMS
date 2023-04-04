@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+    se Crea un VPC con dos bases de Datos internas
+    en subredes publicas.
+
+Resources:
+    VPC:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: 10.0.1.0/24
+            EnableDnsSupport: true
+            EnableDnsHostnames: true
+    
+    SubnetMySQL:
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref VPC
+    
+    SubnetPostgres:
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref VPC
+    
+    SubnetPrivate1:
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref VPC
+            MapPublicOnLaunch: false
+
+    SubnetPrivate2:
+        Type: AWS::EC2::Subnet
+        Properties:
+            VpcId: !Ref VPC
+            MapPublicOnLaunch: false
+
+    InternetGateway:
+      Type: AWS::EC2::InternetGateway
+    
+    VPCGatewayAttachment:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+          VpcId: !Ref VPC
+          InternetGatewayId: !Ref InternetGateway
+
+          
+    SubnetRouteTable:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref VPC
+
+    SubnetMySQLRoute:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref SubnetRouteTable
+            SubnetId: !Ref SubnetMySQL
+    
+    SubnetPostgresRoute:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            RouteTableId: !Ref SubnetRouteTable
+            SubnetId: !Ref SubnetPostgres
+
+    InternetGatewayRoute:
+        Type: AWS::EC2::Route
+        DependsOn: !Ref VPCGatewayAttachment
+        Properties:
+            RouteTableId: !Ref SubnetRouteTable
+            GatewayId: !Ref InternetGateway
+# Hasta este momento se ha creado una VPC con 2 subredes públicas y 2 subredes privadas conectadas entre sí
