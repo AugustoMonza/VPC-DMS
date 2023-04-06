@@ -107,4 +107,17 @@ Resources:
     
     #Base de Datos RDS
 
-    
+    RDSDBInstance:
+        Type: AWS::RDS::DBInstance
+        Properties:
+            Engine: MySQL
+            EngineVersion: MySQL 8.0.32
+            DBInstanceIdentifier: dms-mysql
+            MasterUsername: admin
+            MasterUserPassword: changeit
+            DBInstanceClass: db.t2.micro
+            VPCSecurityGroups:
+              - !Ref SecurityGroup
+            AvailabilityZone: sa-east-1
+            DBName: dms_sample
+            DBParameterGroupName: !Ref RDSMySQLParameterGroup
