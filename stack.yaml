@@ -75,10 +75,36 @@ Resources:
         SecurityGroupIngress:
             - IpProtocol: tcp
               CidrIp: 0.0.0.0/0
+              Description: Security Group Ingrees to MySQL
               FromPort: 3306
               ToPort: 3306
             - IpProtocol: tcp
               CidrIp: 0.0.0.0/0
+              Description: Security Group Ingrees to Postgres
               FromPort: 5432
               ToPort: 5432
-        
+
+#Grupos de Parámetros RDS
+
+    RDSMySQLParameterGroup:
+        Type: AWS::RDS::DBParameterGroup
+        Properties:
+            DBParameterGroupName: dms-mysql-parameters 
+            Description: Group for specifying binary log settings for replication
+            Family: mysql8.0
+            Parameters:
+                binlog_checksum: NONE
+                binlog_format: ROW
+    
+    RDSPostgresParameterGroup:
+        Type: AWS::RDS::DBParameterGroup
+        Properties:
+            DBParameterGroupName: dms-postgresql-parameters 
+            Description: Group for specifying role setting for replication
+            Family: postgres13
+            Parameters:
+                session_replication_role: replica
+    
+    #Base de Datos RDS
+
+    
