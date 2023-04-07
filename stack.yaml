@@ -61,7 +61,8 @@ Resources:
 
     InternetGatewayRoute:
         Type: AWS::EC2::Route
-        DependsOn: !Ref VPCGatewayAttachment
+        DependsOn: 
+            -   'VPCGatewayAttachment'
         Properties:
             RouteTableId: !Ref SubnetRouteTable
             GatewayId: !Ref InternetGateway
@@ -133,7 +134,7 @@ Resources:
             MasterUserPassword: changeit
             DBInstanceClass: db.t2.micro
             VPCSecurityGroups:
-              - !Ref SecurityGroup
+              -  !Ref SecurityGroup
             AvailabilityZone: sa-east-1
             DBName: dms_sample_postgresql
             DBParameterGroupName: !Ref RDSPostgresParameterGroup
