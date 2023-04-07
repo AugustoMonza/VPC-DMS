@@ -107,10 +107,10 @@ Resources:
     
     #Base de Datos RDS
 
-    RDSDBInstance:
+    RDSMySQLDBInstance:
         Type: AWS::RDS::DBInstance
         Properties:
-            Engine: MySQL
+            Engine: mysql
             EngineVersion: MySQL 8.0.32
             DBInstanceIdentifier: dms-mysql
             MasterUsername: admin
@@ -121,3 +121,22 @@ Resources:
             AvailabilityZone: sa-east-1
             DBName: dms_sample
             DBParameterGroupName: !Ref RDSMySQLParameterGroup
+            PubliclyAccessible: true
+            BackupRetentionPeriod: 1
+            
+    RDSPostgreSQLDBInstance:
+        Type: AWS::RDS::DBInstance
+        Properties:
+            Engine: postgres
+            DBInstanceIdentifier: dms-postgresql
+            MasterUsername: postgres
+            MasterUserPassword: changeit
+            DBInstanceClass: db.t2.micro
+            VPCSecurityGroups:
+              - !Ref SecurityGroup
+            AvailabilityZone: sa-east-1
+            DBName: dms_sample_postgresql
+            DBParameterGroupName: !Ref RDSPostgresParameterGroup
+            PubliclyAccessible: true
+            BackupRetentionPeriod: 1
+            CopyTagsToSnapshot: true
